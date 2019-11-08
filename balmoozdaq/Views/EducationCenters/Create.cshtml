@@ -1,0 +1,63 @@
+@model balmoozdaq.Models.EducationCenter
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Create</title>
+</head>
+<body>
+
+<h4>EducationCenter</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="EduCenterName" class="control-label"></label>
+                <input asp-for="EduCenterName" class="form-control" />
+                <span asp-validation-for="EduCenterName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="EduCenterDesc" class="control-label"></label>
+                <input asp-for="EduCenterDesc" class="form-control" />
+                <span asp-validation-for="EduCenterDesc" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="EduCenterPhone" class="control-label"></label>
+                <input asp-for="EduCenterPhone" class="form-control" />
+                <span asp-validation-for="EduCenterPhone" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="EduCenterAddress" class="control-label"></label>
+                <input asp-for="EduCenterAddress" class="form-control" />
+                <span asp-validation-for="EduCenterAddress" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="EduCenterImgUrl" class="control-label"></label>
+                <input asp-for="EduCenterImgUrl" class="form-control" />
+                <span asp-validation-for="EduCenterImgUrl" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UserId" class="control-label"></label>
+                <select asp-for="UserId" class ="form-control" asp-items="ViewBag.UserId"></select>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+</body>
+</html>
