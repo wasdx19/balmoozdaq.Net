@@ -7,22 +7,23 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using balmoozdaq.Data;
 using balmoozdaq.Models;
+using balmoozdaq.Services;
 
 namespace balmoozdaq.Controllers
 {
     public class CenterController : Controller
     {
-        private readonly BalmoozdaqContext _context;
+        private readonly CenterService _service;
 
-        public CenterController(BalmoozdaqContext context)
+        public CenterController(CenterService service)
         {
-            _context = context;
+            _service = service;
         }
 
         // GET: Center
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Center.ToListAsync());
+            return View(await _service.GetCenter());
         }
 
         // GET: Center/Details/5
@@ -33,8 +34,7 @@ namespace balmoozdaq.Controllers
                 return NotFound();
             }
 
-            var center = await _context.Center
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var center = await _service.DetailsCenter(id);
             if (center == null)
             {
                 return NotFound();
@@ -58,8 +58,7 @@ namespace balmoozdaq.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(center);
-                await _context.SaveChangesAsync();
+                await _service.AddAndSave(center);
                 return RedirectToAction(nameof(Index));
             }
             return View(center);
@@ -73,7 +72,7 @@ namespace balmoozdaq.Controllers
                 return NotFound();
             }
 
-            var center = await _context.Center.FindAsync(id);
+            var center = await _service.DetailsCenter(id);
             if (center == null)
             {
                 return NotFound();
@@ -97,8 +96,7 @@ namespace balmoozdaq.Controllers
             {
                 try
                 {
-                    _context.Update(center);
-                    await _context.SaveChangesAsync();
+                    await _service.Update(center);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -124,8 +122,7 @@ namespace balmoozdaq.Controllers
                 return NotFound();
             }
 
-            var center = await _context.Center
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var center = await _service.DetailsCenter(id);
             if (center == null)
             {
                 return NotFound();
@@ -139,15 +136,14 @@ namespace balmoozdaq.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var center = await _context.Center.FindAsync(id);
-            _context.Center.Remove(center);
-            await _context.SaveChangesAsync();
+            var center = await _service.DetailsCenter(id);
+            await _service.Delete(center);
             return RedirectToAction(nameof(Index));
         }
 
         private bool CenterExists(int id)
         {
-            return _context.Center.Any(e => e.Id == id);
+            return _service.CenterExis(id);
         }
 
         //REMOTE VALIDATION

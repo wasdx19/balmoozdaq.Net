@@ -4,6 +4,8 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using balmoozdaq.Data;
+using balmoozdaq.Repositories;
+using balmoozdaq.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -26,6 +28,9 @@ namespace balmoozdaq
             });
             services.AddMvc();
             //services.AddControllers();
+
+            services.AddScoped<CenterService>();
+            services.AddScoped<ICenterRepo, CenterRepo>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
