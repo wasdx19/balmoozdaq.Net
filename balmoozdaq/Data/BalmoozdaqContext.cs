@@ -6,58 +6,36 @@ namespace balmoozdaq.Data
 {
     public class BalmoozdaqContext:DbContext
     {
-        public BalmoozdaqContext(DbContextOptions options) : base(options)
+        public BalmoozdaqContext(DbContextOptions options):base(options)
         {
         }
 
-        public DbSet<User> Users { get; set; }
-        public DbSet<Course> Courses { get; set; }
-        public DbSet<EducationCenter> EducationCenters { get; set; }
-        public DbSet<CourseTime> CourseTimes { get; set; }
-        public DbSet<WeekDay> WeekDays { get; set; }
-        public DbSet<CenterCourse> CenterCourses { get; set; }
-        public DbSet<Role> Roles { get; set; }
-        
+        public DbSet<Center> Center { get; set; }
+        public DbSet<Course> Course { get; set; }
+        public DbSet<CourseTime> CourseTime { get; set; }
+        public DbSet<CourseType> CourseType { get; set; }
+        public DbSet<Weekday> Weekday { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            //one to one
-            modelBuilder.Entity<User>()
-                .HasOne(u => u.EducationCenter)
-                .WithOne(e => e.User)
-                .HasForeignKey<EducationCenter>(e=>e.UserId);
+            //one-to-one  {Course-CourseTime}
+            modelBuilder.Entity<Course>()
+                .HasOne(c => c.CourseTime)
+                .WithOne(ct => ct.Course)
+                .HasForeignKey<CourseTime>(ct => ct.CourseId);
 
-            //one to many
-            modelBuilder.Entity<Role>()
-                .HasMany(r => r.Users)
-                .WithOne(u => u.Role);
+            //one-to-many {Center-Course; CourseType-Course; Weekday-CourseTime}
+            modelBuilder.Entity<CourseTime>()
+                .HasOne(ct => ct.Weekday)
+                .WithMany(w => w.CourseTimeList);
 
-            modelBuilder.Entity<WeekDay>()
-                .HasMany(w => w.CourseTimes)
-                .WithOne(c => c.WeekDay);
+            modelBuilder.Entity<Course>()
+                .HasOne(c => c.Center)
+                .WithMany(cn => cn.CourseList);
 
-            modelBuilder.Entity<CenterCourse>()
-                .HasMany(c => c.WeekDay)
-                .WithOne(w => w.CenterCourse);
-
-            //many to many
-            modelBuilder.Entity<CenterCourse>()
-                .HasKey(c => new { c.EduCenterId, c.CourseId, c.UserId});
-
-            modelBuilder.Entity<CenterCourse>()
-                .HasOne(c => c.Course)
-                .WithMany(c => c.CenterCourses)
-                .HasForeignKey(cc => cc.CourseId);
-
-            modelBuilder.Entity<CenterCourse>()
-                .HasOne(cc => cc.EducationCenter)
-                .WithMany(ec => ec.CenterCourses)
-                .HasForeignKey(cc => cc.EduCenterId);
-
-            modelBuilder.Entity<CenterCourse>()
-                .HasOne(cc => cc.User)
-                .WithMany(u => u.CenterCourses)
-                .HasForeignKey(cc => cc.UserId);
+            modelBuilder.Entity<Course>()
+                .HasOne(c => c.CourseType)
+                .WithMany(ct => ct.CourseList);
         }
     }
 }

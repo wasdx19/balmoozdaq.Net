@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using balmoozdaq.Data;
@@ -24,7 +25,7 @@ namespace balmoozdaq
                 options.UseSqlite("Filename=balmoozdaq.db");
             });
             services.AddMvc();
-            services.AddControllers();
+            //services.AddControllers();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -33,7 +34,6 @@ namespace balmoozdaq
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-
             }
             app.UseRouting();
             app.UseStaticFiles();
@@ -42,7 +42,7 @@ namespace balmoozdaq
             {
                 endpoints.MapControllerRoute(
                     "default",
-                    "{controller=Users}/{action=Index}/{id?}");
+                    "{controller=User}/{action=Index}/{id?}");
             });
         }
     }
