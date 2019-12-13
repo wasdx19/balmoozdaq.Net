@@ -149,5 +149,17 @@ namespace balmoozdaq.Controllers
         {
             return _context.Center.Any(e => e.Id == id);
         }
+
+        //REMOTE VALIDATION
+        [AcceptVerbs("GET", "POST")]
+        public IActionResult CheckUrl(string imgurl)
+        {
+            if (!imgurl.Contains("//"))
+            {
+                return Json($"{imgurl} should contain //");
+            }
+
+            return Json(true);
+        }
     }
 }
