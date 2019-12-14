@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using balmoozdaq.Data;
 
 namespace balmoozdaq.Migrations
 {
     [DbContext(typeof(BalmoozdaqContext))]
-    partial class BalmoozdaqContextModelSnapshot : ModelSnapshot
+    [Migration("20191214021914_last")]
+    partial class last
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

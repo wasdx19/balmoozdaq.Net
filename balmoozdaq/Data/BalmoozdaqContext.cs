@@ -1,12 +1,13 @@
 ﻿using System;
 using balmoozdaq.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace balmoozdaq.Data
 {
-    public class BalmoozdaqContext:DbContext
+    public class BalmoozdaqContext:IdentityDbContext
     {
-        public BalmoozdaqContext(DbContextOptions options):base(options)
+        public BalmoozdaqContext(DbContextOptions<BalmoozdaqContext> options):base(options)
         {
         }
 
@@ -18,6 +19,9 @@ namespace balmoozdaq.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+
+            base.OnModelCreating(modelBuilder);
+
             //one-to-one  {Course-CourseTime}
             modelBuilder.Entity<Course>()
                 .HasOne(c => c.CourseTime)
