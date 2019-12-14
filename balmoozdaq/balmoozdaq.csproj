@@ -17,6 +17,8 @@
     <Folder Include="Views\Account\" />
     <Folder Include="Views\Home\" />
     <Folder Include="Views\Administration\" />
+    <Folder Include="Hubs\" />
+    <Folder Include="wwwroot\js\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.0.0">

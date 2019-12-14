@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using balmoozdaq.Data;
+using balmoozdaq.Hubs;
 using balmoozdaq.Repositories;
 using balmoozdaq.Services;
 using Microsoft.AspNetCore.Builder;
@@ -27,7 +28,16 @@ namespace balmoozdaq
             {
                 options.UseSqlite("Filename=balmoozdaq.db");
             });
+
             services.AddMvc();
+            services.AddSignalR();
+            services.AddDistributedMemoryCache();
+            services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromSeconds(100);
+                options.Cookie.HttpOnly = true;
+                options.Cookie.IsEssential = true;
+            });
             //services.AddControllers();
 
             services.AddScoped<CenterService>();
@@ -54,12 +64,14 @@ namespace balmoozdaq
             app.UseStaticFiles();
             app.UseAuthentication();
             app.UseAuthorization();
+            app.UseSession();
 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
                     "default",
                     "{controller=Home}/{action=Index}/{id?}");
+                endpoints.MapHub<ChatHub>("/chatHub");
             });
         }
     }

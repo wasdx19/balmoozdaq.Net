@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using balmoozdaq.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -22,6 +23,9 @@ namespace balmoozdaq.Controllers
             this.signInManager = signInManager;
         }
 
+        [TempData]
+        public string Msg { get; set; }
+
         [HttpGet]
         public IActionResult Login()
         {
@@ -40,10 +44,17 @@ namespace balmoozdaq.Controllers
                 {
                     if (!string.IsNullOrEmpty(returnUrl))
                     {
+                        if (string.IsNullOrEmpty(HttpContext.Session.GetString("msg")))
+                        {
+                            HttpContext.Session.SetString("msg", model.Email);
+                        }
+                        Msg = HttpContext.Session.GetString("msg");
+                        
                         return Redirect(returnUrl);
                     }
                     else
                     {
+                        Msg = model.Email;
                         return RedirectToAction("index", "home");
                     }
                 }
